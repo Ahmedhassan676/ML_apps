@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 #%% import required packages
-import numpy as np
-import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
@@ -209,21 +207,29 @@ def main_positive():
             ax3.set_ylabel('T$^2$ contribution plot')
             st.pyplot(fig3)
 
+            T2_top_contributor = np.argmax(T2_contri)
+            st.write('Top Contributor is Variable # {}'.format(T2_top_contributor))
             #%% SPE contribution
             error_test_sample = error_test[sample-1,]
             SPE_contri = error_test_sample*error_test_sample # vector of contributions
+
 
             fig4, ax4 = plt.subplots()
             ax4.plot(SPE_contri)
             ax4.set_xlabel('Variable #')
             ax4.set_ylabel('SPE contribution plot')
             st.pyplot(fig4)
+            Q_top_contributor = np.argmax(SPE_contri)
+            st.write('Top Contributor is Variable # {}'.format(Q_top_contributor))
 
+            if which_anomaly == 'T2 Anomalies':
+                variable = T2_top_contributor
+            else: variable = Q_top_contributor
             #%% variable plot
             fig5, ax5 = plt.subplots()
-            ax5.plot(data_test.iloc[:,23])
+            ax5.plot(data_test.iloc[:,variable])
             ax5.set_xlabel('Sample #')
-            ax5.set_ylabel('Variable 23')
+            ax5.set_ylabel('Variable # {}'.format(variable))
             st.pyplot(fig5)
 
 
