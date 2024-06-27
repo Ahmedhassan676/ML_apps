@@ -106,10 +106,11 @@ def main_positive():
         m = data_train_normal.shape[1]
         st.write(m)
         st.write(len(pca.explained_variance_))
+        mk = len(pca.explained_variance_)
 
         theta1 = np.sum(eig_vals[k:])
-        theta2 = np.sum([eig_vals[j]**2 for j in range(k,97)])
-        theta3 = np.sum([eig_vals[j]**3 for j in range(k,97)])
+        theta2 = np.sum([eig_vals[j]**2 for j in range(k,mk)])
+        theta3 = np.sum([eig_vals[j]**3 for j in range(k,mk)])
         h0 = 1-2*theta1*theta3/(3*theta2**2)
 
         z_alpha = scipy.stats.norm.ppf(1-alpha)
