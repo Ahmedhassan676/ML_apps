@@ -105,7 +105,7 @@ def main_positive():
         eig_vals = pca.explained_variance_
         m = data_train_normal.shape[1]
         st.write(m)
-        st.write(pca.explained_variance_)
+        st.write(len(pca.explained_variance_))
 
         theta1 = np.sum(eig_vals[k:])
         theta2 = np.sum([eig_vals[j]**2 for j in range(k,m)])
