@@ -213,7 +213,9 @@ def main_positive():
             T2_top_contributor = np.argmax(T2_contri)
             st.write('Top Contributor is Variable # {}'.format(T2_top_contributor))
             #%% SPE contribution
-            error_test_sample = error_test[sample-1,]
+            if sample > N:
+                error_test_sample = error_test[sample-N,]
+            else: error_test_sample = error_test[sample,]
             SPE_contri = error_test_sample*error_test_sample # vector of contributions
 
 
