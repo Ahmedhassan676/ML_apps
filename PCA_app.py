@@ -195,8 +195,11 @@ def main_positive():
             if which_anomaly == 'T2 Anomalies':
                 index_list = samples_index_T2
             else: index_list = samples_index_Q
-            sample = st.selectbox('Inspect Anomaly: Sample #',index_list,key='aykeyPCAdasd') - N
-            data_point = np.transpose(data_test_normal[sample-1,])
+            sample = st.selectbox('Inspect Anomaly: Sample #',index_list,key='aykeyPCAdasd') 
+            if sample > N:
+                data_point = np.transpose(data_test_normal[sample-N,])
+            else:
+                data_point = np.transpose(data_train_normal[sample,])
 
             D = np.dot(np.dot(P_matrix,lambda_k_inv),P_matrix.T)
             T2_contri = np.dot(scipy.linalg.sqrtm(D),data_point)**2 # vector of contributions
