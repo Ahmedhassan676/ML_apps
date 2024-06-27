@@ -215,7 +215,7 @@ def main_positive():
             #%% SPE contribution
             if sample > N:
                 error_test_sample = error_test[sample-N,]
-            else: error_test_sample = error_test[sample,]
+            else: error_test_sample = error_test[sample-N,]
             SPE_contri = error_test_sample*error_test_sample # vector of contributions
 
 
