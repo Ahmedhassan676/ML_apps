@@ -199,6 +199,11 @@ def main_positive():
                 index_list = samples_index_T2
             else: index_list = samples_index_Q
             sample = st.selectbox('Inspect Anomaly: Sample #',index_list,key='aykeyPCAdasd') 
+            total_df = pd.concat([data_train,data_test])
+            sample_df = pd.DataFrame(total_df.iloc[sample,:])
+            sample_df['Variable #'] = np.arange(sample_df.shape[0])
+            sample_df = sample_df.transpose()
+            st.write(sample_df)
             if sample > N:
                 data_point = np.transpose(data_test_normal[sample-N,])
             else:
@@ -230,6 +235,17 @@ def main_positive():
             Q_top_contributor = np.argmax(SPE_contri)
             st.write('Top Contributor is Variable # {}'.format(Q_top_contributor))
 
+            def color_anomaly(val,list_of_variables):
+                # st.write(val)
+                if val in list_of_variables:
+                    color = 'red' #if val 
+                else:
+                    color = 'green'
+                return f'background-color: {color}'
+            subset_detected = sample_df.columns[T2_top_contributor]
+            #subset_detected = sample_df.iloc[:,[T2_top_contributor,Q_top_contributor]].columns.tolist()
+
+            st.dataframe(sample_df.style.applymap(color_anomaly, list_of_variables =[T2_top_contributor,Q_top_contributor] )) #subset=[subset_detected]))
             if which_anomaly == 'T2 Anomalies':
                 variable = T2_top_contributor
             else: variable = Q_top_contributor
@@ -239,7 +255,7 @@ def main_positive():
             ax5.set_xlabel('Sample #')
             ax5.set_ylabel('Variable # {}'.format(variable))
             st.pyplot(fig5)
-
+            
 
 if __name__ == '__main__':
     main_positive()
