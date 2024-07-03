@@ -17,7 +17,7 @@ def get_df_4m_uploaded_file(uploaded_file):
     elif file_extension == 'csv':
         df_uploaded = pd.read_csv(uploaded_file)
     return df_uploaded
-def main_positive():
+def main_PCA():
     html_temp="""
     <div style="background-color:  #11213b  ;padding:16px">
     <h2 style="color:white"; text-align:center> PCA APP </h2>
@@ -104,8 +104,8 @@ def main_positive():
         #%% Q_train control limit
         eig_vals = pca.explained_variance_
         m = data_train_normal.shape[1]
-        st.write(m)
-        st.write(len(pca.explained_variance_))
+        # st.write(m)
+        # st.write(len(pca.explained_variance_))
         mk = len(pca.explained_variance_)
 
         theta1 = np.sum(eig_vals[k:])
@@ -221,9 +221,10 @@ def main_positive():
             T2_top_contributor = np.argmax(T2_contri)
             st.write('Top Contributor is Variable # {}'.format(T2_top_contributor))
             #%% SPE contribution
+            combined_errors = np.concatenate((error_train,error_test), axis=0)
             if sample > N:
                 error_test_sample = error_test[sample-N,]
-            else: error_test_sample = error_test[sample-N,]
+            else: error_test_sample = error_train[sample,]
             SPE_contri = error_test_sample*error_test_sample # vector of contributions
 
 
@@ -258,4 +259,4 @@ def main_positive():
             
 
 if __name__ == '__main__':
-    main_positive()
+    main_PCA()
