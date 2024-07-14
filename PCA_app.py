@@ -180,7 +180,7 @@ def main_PCA():
             fig1, ax1 = plt.subplots()
             ax1.plot(T2_combined)
             ax1.plot([1,len(T2_combined)],[T2_CL,T2_CL], color='red')
-            ax1.plot([69,69],[0,100], color='cyan')
+            #ax1.plot([69,69],[0,100], color='cyan')
             ax1.set_xlabel('Sample #')
             ax1.set_ylabel('T$^2$ for training and test data')
             st.pyplot(fig1)
@@ -190,7 +190,7 @@ def main_PCA():
             fig2, ax2 = plt.subplots()
             ax2.plot(Q_combined)
             ax2.plot([1,len(Q_combined)],[Q_CL,Q_CL], color='red')
-            ax2.plot([69,69],[0,100], color='cyan')
+            #ax2.plot([69,69],[0,100], color='cyan')
             ax2.set_xlabel('Sample #')
             ax2.set_ylabel('Q for training and test data')
             st.pyplot(fig2)
@@ -215,7 +215,7 @@ def main_PCA():
                 index_list = samples_index_T2
             else: index_list = samples_index_Q
             sample = st.selectbox('Inspect Anomaly: Sample #',index_list,key='aykeyPCAdasd') 
-            total_df = pd.concat([data_train,data_test])
+            total_df = pd.concat([data_train,data_test]).reset_index()
             sample_df = pd.DataFrame(total_df.iloc[sample,:])
             sample_df['Variable #'] = np.arange(sample_df.shape[0])
             sample_df = sample_df.transpose()
@@ -274,7 +274,7 @@ def main_PCA():
             else: variable = Q_top_contributor
             #%% variable plot
             fig5, ax5 = plt.subplots()
-            ax5.plot(data_test.iloc[:,variable])
+            ax5.plot(total_df.iloc[:,variable])
             ax5.set_xlabel('Sample #')
             ax5.set_ylabel('Variable # {}'.format(variable))
             st.pyplot(fig5)
