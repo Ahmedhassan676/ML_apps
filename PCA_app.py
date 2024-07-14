@@ -260,7 +260,10 @@ def main_PCA():
             #         color = 'green'
             #     return f'background-color: {color}'
             # subset_detected = sample_df.columns[T2_top_contributor]
-            subset_detected = sample_df.iloc[:,[T2_top_contributor,Q_top_contributor]].columns.tolist()
+            if T2_top_contributor != Q_top_contributor:
+                subset_detected = sample_df.iloc[:,[T2_top_contributor,Q_top_contributor]].columns.tolist()
+            else:
+                subset_detected = sample_df.columns.tolist()[T2_top_contributor]
             # st.dataframe(sample_df.style.applymap(color_anomaly, list_of_variables =[T2_top_contributor,Q_top_contributor] )) 
             # function definition 
             def highlight_cols(s): 
@@ -278,6 +281,15 @@ def main_PCA():
             ax5.set_xlabel('Sample #')
             ax5.set_ylabel('Variable # {}'.format(variable))
             st.pyplot(fig5)
+            if T2_top_contributor != Q_top_contributor:
+                if variable == Q_top_contributor:
+                    variable2 = T2_top_contributor
+                else: variable2 =Q_top_contributor
+                fig6, ax6 = plt.subplots()
+                ax6.plot(total_df.iloc[:,variable2])
+                ax6.set_xlabel('Sample #')
+                ax6.set_ylabel('Variable # {}'.format(variable2))
+                st.pyplot(fig6)
             
 
 if __name__ == '__main__':
