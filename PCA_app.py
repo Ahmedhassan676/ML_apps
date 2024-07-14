@@ -71,11 +71,27 @@ def main_PCA():
         n_comp = np.argmax(cum_explained_variance >= 90) + 1
         score_train_reduced = score_train[:,0:n_comp]
 
-        st.write('Number of PCs cumulatively explaining atleast 90% variance: ', n_comp)
+        st.write('Number of PCs cumulatively explaining atleast 90% variance: ', str(n_comp))
 
         #%% reconstruct original data
         V_matrix = pca.components_.T
         P_matrix = V_matrix[:,0:n_comp] 
+        display_calcs = st.toggle('Display PCA Calculation Tables')
+        if display_calcs:
+            # Variance explained by each component
+            explained_variance = pca.explained_variance_ratio_ * 100
+            cumulative_variance = np.cumsum(explained_variance)
+
+            # Loadings (components)
+            loadings_table = pd.DataFrame(pca.components_[0:n_comp,0:n_comp].T, columns=[f'PC{i+1}' for i in range(n_comp)], index=data_train.columns[:n_comp])
+
+            # Create the output table
+            output_table =pd.DataFrame({'Variance': pca.explained_variance_[:n_comp], 'Proportion': explained_variance[:n_comp], 'Cum. Proportion': cumulative_variance[:n_comp]}).T
+            output_table = output_table.rename(columns={i:f'PC{i+1}' for i in range(n_comp)})
+            st.write('Variance Table')
+            st.dataframe(output_table)
+            st.write('Loadings Table')
+            st.dataframe(loadings_table )
 
         data_train_normal_reconstruct = np.dot(score_train_reduced, P_matrix.T)
 
@@ -135,7 +151,7 @@ def main_PCA():
         ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         ##                          test data
         ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        uploaded_file_test = st.file_uploader('Choose Training Dataset', key = 2)
+        uploaded_file_test = st.file_uploader('Choose Test Dataset', key = 2)
     
         if uploaded_file_test:
             #%% get test data, normalize it
@@ -236,17 +252,23 @@ def main_PCA():
             Q_top_contributor = np.argmax(SPE_contri)
             st.write('Top Contributor is Variable # {}'.format(Q_top_contributor))
 
-            def color_anomaly(val,list_of_variables):
-                # st.write(val)
-                if val in list_of_variables:
-                    color = 'red' #if val 
-                else:
-                    color = 'green'
-                return f'background-color: {color}'
-            subset_detected = sample_df.columns[T2_top_contributor]
-            #subset_detected = sample_df.iloc[:,[T2_top_contributor,Q_top_contributor]].columns.tolist()
-
-            st.dataframe(sample_df.style.applymap(color_anomaly, list_of_variables =[T2_top_contributor,Q_top_contributor] )) #subset=[subset_detected]))
+            # def color_anomaly(val,list_of_variables):
+            #     # st.write(val)
+            #     if val in list_of_variables:
+            #         color = 'red' #if val 
+            #     else:
+            #         color = 'green'
+            #     return f'background-color: {color}'
+            # subset_detected = sample_df.columns[T2_top_contributor]
+            subset_detected = sample_df.iloc[:,[T2_top_contributor,Q_top_contributor]].columns.tolist()
+            # st.dataframe(sample_df.style.applymap(color_anomaly, list_of_variables =[T2_top_contributor,Q_top_contributor] )) 
+            # function definition 
+            def highlight_cols(s): 
+                return 'background-color: % s' % 'red'
+  
+            # highlighting the cells 
+            st.write(sample_df.style.applymap(highlight_cols,  
+                                    subset = pd.IndexSlice[:, subset_detected])) 
             if which_anomaly == 'T2 Anomalies':
                 variable = T2_top_contributor
             else: variable = Q_top_contributor
