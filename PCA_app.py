@@ -55,7 +55,7 @@ def main_PCA():
 
         #%% separate train data
         data_train = get_df_4m_uploaded_file(uploaded_file).iloc[1:,:]
-                
+        column_names = data_train.columns.tolist()       
         #%% scale data
         scaler = StandardScaler()
         data_train_normal = scaler.fit_transform(data_train)
@@ -279,7 +279,7 @@ def main_PCA():
             fig5, ax5 = plt.subplots()
             ax5.plot(total_df.iloc[:,variable])
             ax5.set_xlabel('Sample #')
-            ax5.set_ylabel('Variable # {}'.format(variable))
+            ax5.set_ylabel('Variable # {} ({})'.format(variable,column_names[variable]))
             st.pyplot(fig5)
             if T2_top_contributor != Q_top_contributor:
                 if variable == Q_top_contributor:
@@ -288,7 +288,7 @@ def main_PCA():
                 fig6, ax6 = plt.subplots()
                 ax6.plot(total_df.iloc[:,variable2])
                 ax6.set_xlabel('Sample #')
-                ax6.set_ylabel('Variable # {}'.format(variable2))
+                ax6.set_ylabel('Variable # {} ({})'.format(variable2,column_names[variable2]))
                 st.pyplot(fig6)
             
 
