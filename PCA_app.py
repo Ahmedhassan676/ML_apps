@@ -234,7 +234,7 @@ def main_PCA():
             ax3.set_ylabel('T$^2$ contribution plot')
             st.pyplot(fig3)
 
-            T2_top_contributor = np.argmax(T2_contri)
+            T2_top_contributor = np.argmax(T2_contri) +1
             st.write('Top Contributor is Variable # {}'.format(T2_top_contributor))
             #%% SPE contribution
             combined_errors = np.concatenate((error_train,error_test), axis=0)
@@ -249,7 +249,7 @@ def main_PCA():
             ax4.set_xlabel('Variable #')
             ax4.set_ylabel('SPE contribution plot')
             st.pyplot(fig4)
-            Q_top_contributor = np.argmax(SPE_contri)
+            Q_top_contributor = np.argmax(SPE_contri) +1
             st.write('Top Contributor is Variable # {}'.format(Q_top_contributor))
 
             # def color_anomaly(val,list_of_variables):
